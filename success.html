@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payment Successful — EverNew Kids</title>
+<meta name="description" content="Thank you for your purchase! Download your printable coloring books."/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="css/style.css"/>
+
+<style>
+  .success-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--bg, #FFFBF7);
+  }
+  .success-card {
+    background: var(--surface, #ffffff);
+    border: 1.5px solid var(--border, #F0E8DF);
+    border-radius: var(--r-xl, 32px);
+    padding: 3.5rem 2.5rem;
+    max-width: 620px;
+    margin: 4rem auto;
+    text-align: center;
+    box-shadow: var(--shadow-lg, 0 16px 56px rgba(0,0,0,0.15));
+    position: relative;
+    overflow: hidden;
+  }
+  .success-icon {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #3ECF8E, #1DB481);
+    color: white;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2.8rem;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 25px rgba(62, 207, 142, 0.4);
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .success-title {
+    font-family: var(--font-h, 'Poppins', sans-serif);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 900;
+    margin-bottom: 0.8rem;
+    color: var(--text, #1C1C2E);
+  }
+  .order-id-badge {
+    display: inline-block;
+    background: rgba(255, 90, 95, 0.08);
+    color: var(--primary, #FF5A5F);
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 6px 16px;
+    border-radius: var(--r-pill, 999px);
+    margin-bottom: 1.5rem;
+  }
+  .download-box {
+    background: var(--bg, #FFFBF7);
+    border: 1.5px dashed var(--border, #F0E8DF);
+    border-radius: var(--r-lg, 24px);
+    padding: 2rem;
+    margin-block: 2rem;
+  }
+  .download-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .download-item:last-child {
+    margin-bottom: 0;
+  }
+  .item-info {
+    text-align: left;
+  }
+  .item-title {
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+  .item-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .btn-download {
+    background: linear-gradient(135deg, var(--primary, #FF5A5F), var(--secondary, #FF9A3C));
+    color: white;
+    font-weight: 800;
+    padding: 10px 20px;
+    border-radius: var(--r-pill, 999px);
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(255, 90, 95, 0.3);
+    transition: all 0.2s;
+  }
+  .btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 90, 95, 0.45);
+  }
+</style>
+</head>
+
+<body class="success-page">
+
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><span>🎨</span></div>
+        <div class="logo-words">
+          <span class="logo-ever">Ever</span><span class="logo-new">New</span>
+          <span class="logo-kids">Kids</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="success-card">
+    <div class="success-icon">✓</div>
+    <h1 class="success-title">Payment Successful! 🎉</h1>
+    <p style="color:var(--muted); font-size:1.05rem; margin-bottom:1rem;">
+      Thank you for your purchase. Your printable coloring books are ready to download below!
+    </p>
+
+    <div class="order-id-badge" id="session-badge">
+      Session ID: <span id="session-id-text">Loading...</span>
+    </div>
+
+    <div class="download-box">
+      <h3 style="font-family:var(--font-h); font-size:1.1rem; margin-bottom:1.2rem;">📥 Your Digital Downloads</h3>
+      
+      <div id="downloads-list">
+        <!-- Javascript Will Insert PDF Links Here -->
+        <div class="download-item">
+          <div class="item-info">
+            <div class="item-title">🎨 Printable Kids Coloring Book (Full Bundle)</div>
+            <div class="item-meta">High Quality PDF • Ready to Print</div>
+          </div>
+          <!-- Supabase Storage یا آپ کی PDF فائل کا ڈائریکٹ ڈاؤن لوڈ لنک -->
+          <a href="YOUR_SUPABASE_PDF_URL_HERE" class="btn-download" download target="_blank">
+            📥 Download PDF
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.85rem; color:var(--muted); margin-bottom:2rem;">
+      ✉️ A receipt and download link have also been sent to your Stripe checkout email address.
+    </p>
+
+    <a href="index.html" class="btn btn-primary btn-lg">
+      🏠 Back to Home Page
+    </a>
+  </div>
+</main>
+
+<footer class="site-footer" style="margin-top: auto;">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2026 EverNew Kids. All rights reserved. Made with ❤️ for little creators.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Stripe سے واپس آنے پر URL میں موجود session_id کیوری پیرامیٹر کو نکالیں
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+
+    const sessionText = document.getElementById('session-id-text');
+    
+    if (sessionId) {
+      // سیشن آئی ڈی کا شارٹ ورژن دکھائیں
+      sessionText.textContent = sessionId.substring(0, 18) + '...';
+      
+      // 🛒 کامیابی کے بعد کارٹ خود بخود خالی کر دیں
+      localStorage.removeItem('evernew_cart_v2');
+    } else {
+      sessionText.textContent = 'Demo Session';
+    }
+  });
+</script>
+
+</body>
+</html>

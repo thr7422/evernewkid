@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Checkout — EverNew Kids</title>
+<meta name="description" content="Complete your purchase securely."/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+
+<body class="page-checkout">
+
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><span>🎨</span></div>
+        <div class="logo-words">
+          <span class="logo-ever">Ever</span><span class="logo-new">New</span>
+          <span class="logo-kids">Kids</span>
+        </div>
+      </a>
+      <div class="header-right">
+        <a href="index.html" class="btn btn-ghost btn-sm">← Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="checkout-banner">
+  <div class="container">
+    <h1>Your Shopping Cart 🛒</h1>
+    <p>Review your order and proceed to secure instant PDF download.</p>
+    <div class="breadcrumb" style="margin-top: 10px; font-size: 0.9rem; opacity: 0.9;">
+      <a href="index.html">Home</a> <span>/</span> <span>Checkout</span>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="margin-top: 2rem; margin-bottom: 4rem;">
+  <div class="checkout-layout">
+
+    <!-- Cart Items Section -->
+    <div class="cart-panel">
+      <div class="cart-panel-head">
+        <h2>Selected Books</h2>
+        <span class="item-count" id="item-count">0 items</span>
+      </div>
+      
+      <div id="cart-items">
+        <!-- Javascript Dynamic Cart Items Will Render Here -->
+      </div>
+    </div>
+
+    <!-- Order Summary Section -->
+    <div class="summary-sticky">
+      
+      <div class="summary-card" style="padding: 20px; margin-bottom: 20px;">
+        <h3 style="font-family: var(--font-h); font-size: 1.1rem; margin-bottom: 12px;">Have a Discount Code? 🏷️</h3>
+        <form class="promo-row" id="promo-form" style="display: flex; gap: 8px;">
+          <input type="text" id="promo-input" placeholder="e.g. KIDS10" required style="flex: 1; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--r-sm); outline: none; font-size: 0.9rem;" />
+          <button type="submit" style="background: var(--text); color: #fff; font-weight: 700; padding: 10px 18px; border-radius: var(--r-sm); cursor: pointer;">Apply</button>
+        </form>
+        <div id="promo-msg" class="promo-msg" style="margin-top: 8px; font-size: 0.85rem; font-weight: 700;"></div>
+        <p class="promo-hint" style="margin-top: 8px; font-size: 0.8rem; color: var(--muted);">Try using code: <strong>KIDS10</strong> for 10% OFF!</p>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-head" style="padding: 16px 20px; border-bottom: 1px solid var(--border);">
+          <h2 style="font-size: 1.1rem; font-family: var(--font-h);">Order Summary</h2>
+        </div>
+        <div class="summary-body">
+          <div class="sum-row">
+            <span>Subtotal</span>
+            <strong id="sum-sub">$0.00</strong>
+          </div>
+          <div class="sum-row">
+            <span>Discount</span>
+            <strong id="sum-disc" style="color:var(--green);">None</strong>
+          </div>
+          <div class="sum-row">
+            <span>Delivery</span>
+            <strong id="sum-ship">Free Instant PDF ✈️</strong>
+          </div>
+          <div class="sum-row total-row">
+            <span>Total</span>
+            <strong class="total-amt" id="sum-total">$0.00</strong>
+          </div>
+        </div>
+      </div>
+
+      <button class="checkout-btn" id="checkout-btn" style="display: block; width: 100%; margin-top: 20px; padding: 14px; background: var(--text); color: #fff; font-weight: 800; border-radius: var(--r-sm); cursor: pointer; text-align: center; border: none;">
+        🔒 Pay Securely with Stripe
+      </button>
+
+      <div class="payment-badges" style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 0.8rem; color: var(--muted);">
+        <div class="pay-badge">💳 Visa / Mastercard</div>
+        <div class="pay-badge">🔒 256-Bit SSL Encrypted</div>
+      </div>
+
+      <div style="text-align: center; margin-top: 15px;">
+        <a href="index.html" class="back-shop" style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">← Add more books</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast-wrap" id="toast-container"></div>
+
+<!-- 🚀 CHECKOUT LOGIC SCRIPT -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let cart = JSON.parse(localStorage.getItem('evernew_cart_v2')) || [];
+    let discountPercent = 0;
+
+    const cartItemsContainer = document.getElementById('cart-items');
+    const itemCountEl = document.getElementById('item-count');
+    const sumSubEl = document.getElementById('sum-sub');
+    const sumDiscEl = document.getElementById('sum-disc');
+    const sumTotalEl = document.getElementById('sum-total');
+    const promoForm = document.getElementById('promo-form');
+    const promoInput = document.getElementById('promo-input');
+    const promoMsg = document.getElementById('promo-msg');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    function renderCart() {
+      if (!cartItemsContainer) return;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div style="text-align:center; padding: 40px; color: var(--muted);">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
+            <p style="font-weight: 700; font-size: 1.1rem;">Your cart is empty!</p>
+            <a href="index.html" class="btn btn-primary btn-sm" style="margin-top: 15px;">Start Shopping</a>
+          </div>
+        `;
+        if (itemCountEl) itemCountEl.textContent = '0 items';
+        updateTotals();
+        return;
+      }
+
+      let totalItemsCount = cart.reduce((acc, item) => acc + item.qty, 0);
+      if (itemCountEl) itemCountEl.textContent = `${totalItemsCount} items`;
+
+      cartItemsContainer.innerHTML = cart.map(item => {
+        let imgSrc = item.product.image || '';
+        if (imgSrc && !imgSrc.startsWith('http')) {
+          imgSrc = `https://tspwyzqwuqbuetsztxrw.supabase.co/storage/v1/object/public/product-images/${imgSrc.trim()}`;
+        }
+
+        return `
+          <div class="cart-item" style="display: grid; grid-template-columns: 70px 1fr auto; gap: 16px; align-items: center; padding: 16px 20px; border-bottom: 1.5px solid var(--border);">
+            <img src="${imgSrc}" alt="${item.product.name}" style="width: 70px; height: 85px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div style="display:none; width:70px; height:85px; align-items:center; justify-content:center; background:#f3f4f6; border-radius:8px; font-size:1.8rem;">🎨</div>
+            <div>
+              <h4 style="font-family: var(--font-h); font-size: 1rem; font-weight: 800; margin-bottom: 4px;">${item.product.name}</h4>
+              <div style="color: var(--primary); font-weight: 800; font-size: 0.95rem;">$${item.product.price.toFixed(2)}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 6px; background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm); padding: 4px;">
+                <button onclick="changeQty(${item.product.id}, -1)" class="qty-btn" style="width: 26px; height: 26px; font-weight: 900; background: #fff; border-radius: 4px; border: 1px solid var(--border); cursor: pointer;">-</button>
+                <span style="font-weight: 800; font-size: 0.9rem; min-width: 20px; text-align: center;">${item.qty}</span>
+                <button onclick="changeQty(${item.product.id}, 1)" class="qty-btn" style="width: 26px; height: 26px; font-weight: 900; background: #fff; border-radius: 4px; border: 1px solid var(--border); cursor: pointer;">+</button>
+              </div>
+              <button onclick="removeItem(${item.product.id})" style="background: none; border: none; color: #ef4444; font-size: 1.1rem; cursor: pointer; padding: 4px;" title="Remove">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      updateTotals();
+    }
+
+    window.changeQty = function(id, delta) {
+      let item = cart.find(i => i.product.id === id);
+      if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) {
+          cart = cart.filter(i => i.product.id !== id);
+        }
+        saveAndRender();
+      }
+    };
+
+    window.removeItem = function(id) {
+      cart = cart.filter(i => i.product.id !== id);
+      saveAndRender();
+    };
+
+    function saveAndRender() {
+      localStorage.setItem('evernew_cart_v2', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function updateTotals() {
+      let subtotal = cart.reduce((acc, item) => acc + (item.product.price * item.qty), 0);
+      let discountAmount = subtotal * discountPercent;
+      let finalTotal = subtotal - discountAmount;
+
+      if (sumSubEl) sumSubEl.textContent = `$${subtotal.toFixed(2)}`;
+      if (sumTotalEl) sumTotalEl.textContent = `$${finalTotal.toFixed(2)}`;
+
+      if (sumDiscEl) {
+        if (discountPercent > 0) {
+          sumDiscEl.textContent = `-$${discountAmount.toFixed(2)} (${discountPercent * 100}%)`;
+        } else {
+          sumDiscEl.textContent = 'None';
+        }
+      }
+    }
+
+    if (promoForm) {
+      promoForm.onsubmit = (e) => {
+        e.preventDefault();
+        let code = promoInput.value.trim().toUpperCase();
+        if (code === 'KIDS10') {
+          discountPercent = 0.10;
+          promoMsg.style.color = 'var(--green)';
+          promoMsg.textContent = '🎉 Coupon "KIDS10" applied successfully (10% OFF)!';
+          updateTotals();
+        } else {
+          discountPercent = 0;
+          promoMsg.style.color = '#ef4444';
+          promoMsg.textContent = '❌ Invalid coupon code. Try KIDS10';
+          updateTotals();
+        }
+      };
+    }
+
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', async () => {
+        let currentCart = JSON.parse(localStorage.getItem('evernew_cart_v2')) || [];
+        if (currentCart.length === 0) {
+          alert('Your cart is empty!');
+          return;
+        }
+
+        const originalText = checkoutBtn.textContent;
+        checkoutBtn.disabled = true;
+        checkoutBtn.style.opacity = '0.7';
+        checkoutBtn.textContent = '🔒 Connecting to Stripe...';
+
+        try {
+          const cartItems = currentCart.map(item => ({
+            id: item.product.id,
+            qty: item.qty
+          }));
+
+          const response = await fetch('https://backend.evernewkid.com/create-session.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: cartItems, discountPercentage: discountPercent * 100 })
+          });
+
+          const session = await response.json();
+
+          if (session.url) {
+            window.location.href = session.url;
+          } else {
+            throw new Error(session.error || 'Session failed');
+          }
+
+        } catch (error) {
+          console.error('Stripe Connection Error:', error);
+          alert('❌ Error connecting to backend: ' + error.message);
+          checkoutBtn.disabled = false;
+          checkoutBtn.style.opacity = '1';
+          checkoutBtn.textContent = originalText;
+        }
+      });
+    }
+
+    renderCart();
+  });
+</script>
+
+</body>
+</html>

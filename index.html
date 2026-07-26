@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EverNew Kids — Premium Printable Coloring Books</title>
+<meta name="description" content="Premium printable coloring books for kids. Instant PDF download. Ages 2-12."/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="css/style.css"/>
+
+<style>
+  /* Preview Modal Styles */
+  .preview-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 16px;
+  }
+  .preview-modal.active {
+    display: flex;
+    opacity: 1;
+  }
+  .modal-content {
+    background: var(--surface, #fff);
+    max-width: 800px;
+    width: 100%;
+    border-radius: var(--r-lg, 16px);
+    border: 1.5px solid var(--border, #e2e8f0);
+    padding: 32px;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .preview-modal.active .modal-content {
+    transform: scale(1);
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--bg, #f7fafc);
+    border: 1px solid var(--border, #e2e8f0);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text, #2d3748);
+    transition: all 0.2s ease;
+  }
+  .modal-close:hover {
+    background: var(--primary, #FF6B6B);
+    color: white;
+  }
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 680px) {
+    .modal-grid { grid-template-columns: 1fr; }
+  }
+  .modal-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .modal-main-img-wrap {
+    width: 100%;
+    height: 350px;
+    border-radius: var(--r-md, 12px);
+    overflow: hidden;
+    border: 1px solid var(--border, #e2e8f0);
+  }
+  .modal-main-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #f7fafc;
+  }
+  .modal-thumbnails {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+  .modal-thumb {
+    width: 55px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .modal-thumb.active {
+    border-color: var(--primary, #FF6B6B);
+    transform: translateY(-2px);
+  }
+  .modal-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .modal-book-title {
+    font-family: var(--font-h, 'Poppins', sans-serif);
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .modal-pages-badge {
+    align-self: flex-start;
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--primary, #FF6B6B);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+  .modal-desc {
+    color: var(--muted, #718096);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="announcement-bar">
+  🎉 Use code <strong>KIDS10</strong> for 10% OFF your first order! &nbsp;•&nbsp; ⚡ Instant PDF Download
+</div>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <div class="header-inner">
+
+      <a href="index.html" class="logo">
+        <div class="logo-mark">
+          <span>🎨</span>
+        </div>
+        <div class="logo-words">
+          <span class="logo-ever">Ever</span><span class="logo-new">New</span>
+          <span class="logo-kids">Kids</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="main-nav">
+        <a href="#hero">Home</a>
+        <a href="#products">Shop</a>
+        <a href="#why-us">Why Us</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#newsletter">Contact</a>
+      </nav>
+
+      <div class="header-right">
+        <a href="checkout.html" class="cart-btn" id="cart-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span>Cart</span>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-bg-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+
+  <div class="container">
+    <div class="hero-grid">
+
+      <div class="hero-text">
+        <div class="hero-pill">🌟 #1 Printable Coloring Store for Kids</div>
+        <h1 class="hero-heading">
+          Ignite Your Child's <span class="grad-text">Creative</span> Imagination!
+        </h1>
+        <p class="hero-sub">
+          Beautifully illustrated printable coloring books — download instantly, print at home, and color endlessly. Loved by 50,000+ families worldwide! 🖍️
+        </p>
+
+        <div class="hero-btns">
+          <a href="#products" class="btn btn-primary btn-lg">
+            🛍️ Shop Now
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#why-us" class="btn btn-ghost btn-lg">✨ Learn More</a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="trust-item">
+            <div class="trust-icon">⚡</div>
+            <span>Instant Download</span>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">🖨️</div>
+            <span>Print Unlimited</span>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">💯</div>
+            <span>30-Day Guarantee</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="books-showcase">
+          <div class="book-card bc-1">
+            <div class="book-inner">
+              <div class="book-emoji">🦁</div>
+              <div class="book-title">Jungle Safari</div>
+            </div>
+          </div>
+          <div class="book-card bc-2">
+            <div class="book-inner">
+              <div class="book-emoji">🦄</div>
+              <div class="book-title">Unicorn Kingdom</div>
+            </div>
+          </div>
+          <div class="book-card bc-3">
+            <div class="book-inner">
+              <div class="book-emoji">🚀</div>
+              <div class="book-title">Space Explorers</div>
+            </div>
+          </div>
+          <div class="book-card bc-4">
+            <div class="book-inner">
+              <div class="book-emoji">🦕</div>
+              <div class="book-title">Dinosaur Land</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-float-badge">
+          <div class="float-icon">⭐</div>
+          <div class="float-text">
+            <strong>4.9 / 5 Stars</strong>
+            <span>2,400+ Reviews</span>
+          </div>
+        </div>
+
+        <div class="hero-float-badge2">
+          <div class="float-icon">🔥</div>
+          <div class="float-text">
+            <strong>Bestseller!</strong>
+            <span>128 sold today</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="stats-banner">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">50K+</div>
+        <div class="stat-label">Happy Families</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Unique Books</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">⚡ 2s</div>
+        <div class="stat-label">Download Time</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="products-section" id="products">
+  <div class="container">
+
+    <div class="section-header">
+      <div class="section-pill">🎨 Our Collection</div>
+      <h2 class="section-title">Coloring Books <span class="grad-text">Kids Absolutely Love</span></h2>
+      <p class="section-desc">
+        High-quality PDFs — print at home and color endlessly. Each book is designed by professional illustrators.
+      </p>
+    </div>
+
+    <!-- Filter Tabs Container -->
+    <div class="filter-bar" id="filter-tabs" role="group" aria-label="Filter by category"></div>
+
+    <!-- Products Grid Container -->
+    <div class="products-grid" id="products-grid" role="list"></div>
+
+    <div class="view-more-container">
+        <button id="viewMoreBtn" class="view-more-btn">View More Books <span>👇</span></button>
+    </div>
+
+  </div>
+</section>
+
+<section class="why-us" id="why-us">
+  <div class="container">
+    <div class="why-grid">
+
+      <div class="why-text">
+        <div class="section-pill">💡 Why EverNew Kids?</div>
+        <h2 class="section-title" style="text-align:left;">The Premium Choice for Creative Kids</h2>
+        <p style="color:var(--muted); line-height:1.8; margin-bottom:2rem;">
+          We believe every child deserves beautiful, engaging art that sparks creativity. Our books are crafted with love by professional illustrators who understand what kids really love.
+        </p>
+
+        <div class="why-features">
+          <div class="why-feature">
+            <div class="wf-icon" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);">⚡</div>
+            <div class="wf-text">
+              <strong>Instant Digital Download</strong>
+              <span>Get your PDF within seconds of purchase</span>
+            </div>
+          </div>
+
+          <div class="why-feature">
+            <div class="wf-icon" style="background:linear-gradient(135deg,#6BCB77,#4EAFAB);">🖨️</div>
+            <div class="wf-text">
+              <strong>Print As Many Times As You Like</strong>
+              <span>No restrictions — print for the whole class!</span>
+            </div>
+          </div>
+
+          <div class="why-feature">
+            <div class="wf-icon" style="background:linear-gradient(135deg,#9B59B6,#8E44AD);">👨‍🎨</div>
+            <div class="wf-text">
+              <strong>Professional Illustrations</strong>
+              <span>Hand-crafted by expert children's illustrators</span>
+            </div>
+          </div>
+
+          <div class="why-feature">
+            <div class="wf-icon" style="background:linear-gradient(135deg,#FFD93D,#FF9500);">🎯</div>
+            <div class="wf-text">
+              <strong>Age-Appropriate Design</strong>
+              <span>Every book matched to the right developmental stage</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="why-visual">
+        <div class="why-card-big">
+          <div style="font-size:5rem; margin-bottom:1rem;">🎨</div>
+          <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:0.5rem;">Kids Love It!</h3>
+          <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1.5rem;">
+            Join 50,000+ happy families already coloring with EverNew Kids
+          </p>
+
+          <div class="review-avatars">
+            <div class="avatar" style="background:#FF6B6B;">K</div>
+            <div class="avatar" style="background:#6BCB77;">S</div>
+            <div class="avatar" style="background:#FFD93D; color:#333;">A</div>
+            <div class="avatar" style="background:#9B59B6;">M</div>
+            <div class="avatar" style="background:#FF8E53;">R</div>
+            <span style="font-size:0.85rem; color:var(--muted); margin-left:8px;">+50K families</span>
+          </div>
+
+          <div class="star-row" style="margin-top:1rem;">
+            ⭐⭐⭐⭐⭐ <strong style="margin-left:8px;">4.9/5</strong> <span style="color:var(--muted); font-size:0.85rem;">(2,400+ reviews)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-pill">💬 Happy Parents</div>
+      <h2 class="section-title">What Families Are Saying</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testi-text">"My daughter absolutely loves the Unicorn Kingdom book! She's printed it 3 times already. The illustrations are SO beautiful — worth every penny!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+          <div>
+            <strong>Sarah M.</strong>
+            <span>Mom of 2, Texas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testi-text">"Downloaded 5 books for a birthday party activity. All 12 kids were coloring for hours! The Dinosaur Land pack was a massive hit. Will definitely buy more!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#6BCB77,#4EAFAB);">J</div>
+          <div>
+            <strong>James K.</strong>
+            <span>Dad of 3, London</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testi-text">"As a kindergarten teacher, I use these weekly. The Space Explorer book keeps my 5-year-olds engaged for a full hour. Incredible quality for the price!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#9B59B6,#8E44AD);">A</div>
+          <div>
+            <strong>Aisha R.</strong>
+            <span>Teacher, Dubai</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter" id="newsletter">
+  <div class="container">
+    <div class="newsletter-box">
+      <div class="nl-deco" aria-hidden="true">🎨 ✏️ 🖍️ 🎭 🌈</div>
+      <div class="section-pill" style="background:rgba(255,255,255,0.2); color:#fff; border:1px solid rgba(255,255,255,0.3);">📧 Stay Updated</div>
+      <h2 class="nl-title">Get 10% OFF Your First Order!</h2>
+      <p class="nl-sub">Join 50,000+ parents. Get exclusive deals, free coloring pages & new releases first.</p>
+
+      <form class="nl-form" id="newsletter-form" novalidate>
+        <input type="email" placeholder="Enter your email address…" id="nl-email" required/>
+        <button type="submit">Subscribe 🎨</button>
+      </form>
+      <p class="nl-note">No spam. Unsubscribe anytime. 💌</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:1rem;">
+          <div class="logo-mark"><span>🎨</span></div>
+          <div class="logo-words">
+            <span class="logo-ever">Ever</span><span class="logo-new">New</span>
+            <span class="logo-kids" style="color:#aaa;">Kids</span>
+          </div>
+        </div>
+        <p class="footer-tagline">Bringing joy one coloring page at a time. Premium printable books designed for curious, creative little minds everywhere. 🖍️</p>
+
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="Instagram">📸</a>
+          <a href="#" class="social-btn" aria-label="Facebook">👥</a>
+          <a href="#" class="social-btn" aria-label="Pinterest">📌</a>
+          <a href="#" class="social-btn" aria-label="YouTube">▶️</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#products">All Books</a></li>
+          <li><a href="#products">Animals</a></li>
+          <li><a href="#products">Fantasy</a></li>
+          <li><a href="#products">Space</a></li>
+          <li><a href="#products">Ocean</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Affiliates</a></li>
+          <li><a href="#">Press Kit</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Download Help</a></li>
+          <li><a href="#">Refund Policy</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="mailto:support@evernewkid.com">support@evernewkid.com</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 EverNew Kids. All rights reserved. Made with ❤️ for little creators.</p>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toast-container"></div>
+
+<!-- Preview Modal -->
+<div class="preview-modal" id="preview-modal" aria-hidden="true">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closePreviewModal()">&times;</button>
+    
+    <div class="modal-grid">
+      <div class="modal-gallery">
+        <div class="modal-main-img-wrap">
+          <img id="modal-main-img" src="" alt="Main Book Preview">
+        </div>
+        <div class="modal-thumbnails" id="modal-thumbnails"></div>
+      </div>
+
+      <div class="modal-info">
+        <h3 id="modal-book-title" class="modal-book-title grad-text">Book Title</h3>
+        <span id="modal-book-pages" class="modal-pages-badge">40 Pages</span>
+        <p class="modal-desc">
+          Get a sneak peek inside! High-quality illustrated printable pages designed specifically for young artists. Print unlimited copies at home!
+        </p>
+        <button class="btn btn-primary btn-lg" id="modal-action-btn" style="width: 100%; justify-content: center;">
+          🛍️ Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🚀 IMPORT MODULE SUPPORT FOR SUPABASE SDK -->
+<script type="module" src="js/main.js"></script>
+
+<script>
+  function closePreviewModal() {
+    document.getElementById('preview-modal').classList.remove('active');
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('preview-modal');
+    if (event.target === modal) {
+      closePreviewModal();
+    }
+  };
+</script>
+
+</body>
+</html>
